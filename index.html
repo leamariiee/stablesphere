@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StableSphere — Because Every Detail Matters.</title>
+<meta name="description" content="StableSphere is the digital ecosystem for competitive horse owners — health, performance, nutrition and international competition planning in one platform.">
+
+<!-- Favicon: minimal crest mark, inline SVG -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233E2B24'/%3E%3Cpath d='M16 6 L24 10 V17 C24 22 20.5 25.5 16 27 C11.5 25.5 8 22 8 17 V10 Z' fill='none' stroke='%23F3EFEA' stroke-width='1.4'/%3E%3Cpath d='M12.5 19 L15 13 L16 16 L17 13 L19.5 19' fill='none' stroke='%23F3EFEA' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --chocolate:#3E2B24;
+    --taupe:#AA9F95;
+    --creme:#F3EFEA;
+    --navy:#131936;
+    --green:#006039;
+    --orange:#F46A25;
+    --ruby:#7A1F1F;
+
+    --ink: var(--chocolate);
+    --paper: var(--creme);
+    --serif:'Cormorant Garamond', Georgia, serif;
+    --sans:'Manrope', -apple-system, sans-serif;
+
+    --panel-on-dark: rgba(243,239,234,0.055);
+    --panel-on-dark-border: rgba(243,239,234,0.14);
+    --panel-on-light: rgba(170,159,149,0.16);
+    --panel-on-light-border: rgba(62,43,36,0.10);
+
+    --gap: clamp(1.5rem, 4vw, 3rem);
+    --max: 1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;margin:0;padding:0;}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:0.005em;}
+  p{margin:0;}
+  .wrap{max-width:var(--max);margin:0 auto;padding-left:clamp(1.25rem,4vw,3rem);padding-right:clamp(1.25rem,4vw,3rem);}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    font-weight:700;
+    opacity:0.62;
+    margin-bottom:0.9rem;
+    display:block;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:0.92rem;
+    letter-spacing:0.01em;
+    padding:0.85rem 1.7rem;
+    border-radius:999px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .25s ease, background .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn:focus-visible{outline:2px solid var(--navy);outline-offset:3px;}
+
+  .btn-primary-dark{background:var(--creme);color:var(--chocolate);}
+  .btn-primary-dark:hover{background:#fff;}
+  .btn-ghost-dark{border-color:rgba(243,239,234,0.4);color:var(--creme);}
+  .btn-ghost-dark:hover{border-color:var(--creme);background:rgba(243,239,234,0.06);}
+  .btn-primary-light{background:var(--chocolate);color:var(--creme);}
+  .btn-primary-light:hover{background:#2c1f1a;}
+  .btn-ghost-light{border-color:rgba(62,43,36,0.35);color:var(--chocolate);}
+  .btn-ghost-light:hover{border-color:var(--chocolate);}
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:1.1rem 0;
+    background:transparent;
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease, border-color .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(62,43,36,0.92);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    padding:0.75rem 0;
+    border-bottom:1px solid rgba(243,239,234,0.1);
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+  .brand{display:flex;align-items:center;gap:0.65rem;}
+  .brand-mark{width:30px;height:30px;flex:none;}
+  .brand-word{
+    font-family:var(--serif);
+    font-size:1.28rem;
+    letter-spacing:0.04em;
+    color:var(--creme);
+    font-weight:600;
+  }
+  .nav-links{display:flex;align-items:center;gap:2.1rem;}
+  .nav-links a{
+    font-size:0.85rem;
+    font-weight:600;
+    color:rgba(243,239,234,0.82);
+    letter-spacing:0.02em;
+    position:relative;
+    padding-bottom:3px;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;width:0;height:1px;
+    background:var(--creme);transition:width .3s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{display:flex;align-items:center;gap:1.4rem;}
+  .nav-cta .btn{padding:0.62rem 1.35rem;font-size:0.82rem;}
+  .burger{display:none;background:none;border:0;cursor:pointer;padding:0.4rem;}
+  .burger span{display:block;width:22px;height:1.5px;background:var(--creme);margin:5px 0;transition:.3s;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background:var(--chocolate);
+    color:var(--creme);
+    padding:9.5rem 0 6.5rem;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero-crest{
+    position:absolute;
+    right:clamp(-140px,-4vw,-40px);
+    top:50%;transform:translateY(-50%);
+    width:min(46vw,620px);
+    opacity:0.09;
+    z-index:-1;
+    pointer-events:none;
+  }
+  .hero-inner{max-width:640px;}
+  .hero h1{
+    font-size:clamp(2.5rem,5.4vw,4.2rem);
+    line-height:1.06;
+    font-weight:600;
+    color:var(--creme);
+  }
+  .hero h1 em{font-style:italic;font-weight:500;color:var(--taupe);}
+  .hero p.lede{
+    margin-top:1.7rem;
+    font-size:1.12rem;
+    max-width:480px;
+    color:rgba(243,239,234,0.82);
+    font-weight:300;
+  }
+  .hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.6rem;}
+  .hero-tag{
+    margin-top:3.2rem;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--taupe);
+    border-top:1px solid rgba(243,239,234,0.18);
+    padding-top:1.4rem;
+    display:inline-block;
+  }
+
+  /* ---------- Section shell ---------- */
+  section{padding:6.5rem 0;}
+  .section-dark{background:var(--chocolate);color:var(--creme);}
+  .section-dark .eyebrow{color:var(--taupe);opacity:1;}
+  .section-head{max-width:640px;margin-bottom:3.2rem;}
+  .section-head h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.15;}
+  .section-head p{margin-top:1.1rem;font-size:1.02rem;opacity:0.85;font-weight:300;max-width:560px;}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- Problem section ---------- */
+  .scatter{
+    display:flex;flex-wrap:wrap;gap:0.9rem;
+    margin-top:2.6rem;
+  }
+  .scatter span{
+    font-size:0.86rem;font-weight:600;
+    padding:0.6rem 1.1rem;
+    background:var(--panel-on-light);
+    border:1px solid var(--panel-on-light-border);
+    border-radius:999px;
+    color:var(--chocolate);
+  }
+  .scatter span:nth-child(3n){transform:rotate(-1.4deg);}
+  .scatter span:nth-child(3n+1){transform:rotate(1deg);}
+  .problem-close{
+    margin-top:2.6rem;
+    font-family:var(--serif);font-style:italic;
+    font-size:1.28rem;
+    max-width:560px;
+    border-left:2px solid var(--ruby);
+    padding-left:1.3rem;
+  }
+
+  /* ---------- Vision three-up ---------- */
+  .three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);margin-top:2.8rem;}
+  .three-up .item h3{font-size:1.3rem;margin-bottom:0.7rem;}
+  .three-up .item .num{
+    font-family:var(--serif);font-size:0.9rem;color:var(--navy);
+    letter-spacing:0.08em;font-weight:600;display:block;margin-bottom:0.9rem;
+  }
+  .three-up .item p{font-size:0.94rem;opacity:0.82;font-weight:300;}
+
+  /* ---------- Setup: website + app ---------- */
+  .setup-cards{
+    display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;
+    margin-top:2.8rem;
+  }
+  .setup-card{
+    background:var(--creme);
+    border:1px solid var(--panel-on-light-border);
+    border-radius:20px;
+    overflow:hidden;
+    transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .setup-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 24px 48px -28px rgba(62,43,36,0.35);
+    border-color:rgba(62,43,36,0.2);
+  }
+  .setup-card-media{
+    position:relative;width:100%;padding-top:62%;
+    background:var(--panel-on-light); /* shows as a soft placeholder until an image is added */
+    overflow:hidden;
+  }
+  .setup-card-media img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .setup-card:hover .setup-card-media img{transform:scale(1.04);}
+  .setup-card-body{padding:1.8rem 1.8rem 2rem;}
+  .setup-card-body h3{font-size:1.25rem;margin-bottom:0.6rem;}
+  .setup-card-body p{font-size:0.92rem;opacity:0.78;font-weight:300;margin-bottom:1.5rem;}
+  .setup-btn{width:100%;justify-content:center;padding:0.8rem 1.5rem;font-size:0.85rem;}
+  .setup-note{
+    margin-top:2.2rem;
+    font-size:0.88rem;
+    opacity:0.65;
+    font-style:italic;
+    font-family:var(--serif);
+  }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;
+  }
+  .feature-card{
+    background:var(--panel-on-dark);
+    border:1px solid var(--panel-on-dark-border);
+    border-radius:16px;
+    padding:1.9rem 1.6rem;
+    cursor:pointer;
+    transition:background .3s ease, border-color .3s ease, transform .3s ease;
+  }
+  .feature-card:hover{background:rgba(243,239,234,0.09);transform:translateY(-3px);}
+  .feature-card:focus-visible{outline:2px solid var(--creme);outline-offset:3px;}
+  .feature-card .ficon{width:30px;height:30px;margin-bottom:1.3rem;color:var(--taupe);}
+  .feature-card h3{font-size:1.08rem;color:var(--creme);margin-bottom:0.55rem;font-weight:600;}
+  .feature-card p{font-size:0.87rem;color:rgba(243,239,234,0.7);font-weight:300;line-height:1.55;}
+  .status-row{display:flex;gap:0.4rem;margin-top:1rem;}
+  .status-dot{width:9px;height:9px;border-radius:50%;}
+  .status-dot.green{background:var(--green);}
+  .status-dot.orange{background:var(--orange);}
+  .status-dot.ruby{background:var(--ruby);}
+
+  /* ---------- Audience chips ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:2.4rem;}
+  .chips span{
+    font-size:0.88rem;font-weight:600;
+    padding:0.68rem 1.3rem;
+    border:1px solid var(--panel-on-light-border);
+    border-radius:999px;
+    background:var(--creme);
+  }
+
+  /* ---------- Video ---------- */
+  .video-frame{
+    margin-top:2.6rem;
+    border:1px solid var(--panel-on-dark-border);
+    border-radius:20px;
+    padding:0.7rem;
+    background:var(--panel-on-dark);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.5);
+  }
+  .video-frame .ratio{
+    position:relative;width:100%;padding-top:56.25%;
+    border-radius:14px;overflow:hidden;background:#241813;
+  }
+  .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .video-note{margin-top:1rem;font-size:0.8rem;color:rgba(243,239,234,0.55);}
+
+  /* ---------- Contact / Calendly ---------- */
+  .contact-panel{
+    margin-top:2.6rem;
+    display:grid;grid-template-columns:1.1fr 1fr;gap:var(--gap);
+    align-items:start;
+  }
+  .contact-card{
+    background:var(--creme);
+    border:1px solid var(--panel-on-light-border);
+    border-radius:20px;
+    padding:2.2rem;
+  }
+  .contact-card h3{font-size:1.15rem;margin-bottom:0.6rem;}
+  .contact-card p{font-size:0.92rem;opacity:0.8;margin-bottom:1.6rem;font-weight:300;}
+  #calendly-inline-widget{min-width:280px;height:640px;border-radius:16px;overflow:hidden;border:1px solid var(--panel-on-light-border);}
+
+  /* ---------- Feature detail modal ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(20,13,10,0.72);
+    -webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    padding:1.5rem;
+    opacity:0;pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    background:var(--chocolate);
+    color:var(--creme);
+    border:1px solid rgba(243,239,234,0.14);
+    border-radius:22px;
+    max-width:560px;width:100%;
+    max-height:88vh;overflow-y:auto;
+    transform:translateY(14px) scale(0.98);
+    transition:transform .35s ease;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.6);
+  }
+  .modal-overlay.open .modal-card{transform:translateY(0) scale(1);}
+  .modal-media{
+    position:relative;width:100%;padding-top:52%;
+    background:var(--panel-on-dark);
+    border-radius:22px 22px 0 0;
+    overflow:hidden;
+  }
+  .modal-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .modal-close{
+    position:absolute;top:1rem;right:1rem;z-index:2;
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(20,13,10,0.55);
+    border:1px solid rgba(243,239,234,0.3);
+    color:var(--creme);
+    font-size:1.1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .modal-close:hover{background:rgba(20,13,10,0.8);}
+  .modal-body{padding:2.1rem 2.2rem 2.4rem;}
+  .modal-body .eyebrow{color:var(--taupe);opacity:1;margin-bottom:0.5rem;}
+  .modal-body h3{font-size:1.6rem;margin-bottom:1rem;}
+  .modal-body p{font-size:0.98rem;font-weight:300;opacity:0.85;line-height:1.7;}
+  @media (max-width:620px){
+    .modal-body{padding:1.6rem 1.5rem 2rem;}
+    .modal-body h3{font-size:1.35rem;}
+  }
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--chocolate);color:var(--creme);padding:3.6rem 0 2.2rem;}
+  .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem;padding-bottom:2.4rem;border-bottom:1px solid rgba(243,239,234,0.12);}
+  .footer-principle{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--taupe);}
+  .footer-links{display:flex;gap:1.8rem;flex-wrap:wrap;}
+  .footer-links a{font-size:0.85rem;color:rgba(243,239,234,0.75);}
+  .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.8rem;padding-top:1.6rem;font-size:0.78rem;color:rgba(243,239,234,0.55);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .three-up{grid-template-columns:1fr;gap:2rem;}
+    .setup-cards{grid-template-columns:1fr;}
+    .feature-grid{grid-template-columns:repeat(2,1fr);}
+    .contact-panel{grid-template-columns:1fr;}
+    .nav-links{
+      position:fixed;inset:0 0 0 auto;top:0;height:100vh;width:min(78vw,320px);
+      background:var(--chocolate);flex-direction:column;justify-content:center;
+      align-items:flex-start;padding:0 2.5rem;gap:1.9rem;
+      transform:translateX(100%);transition:transform .4s ease;
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-links a{font-size:1.05rem;}
+    .burger{display:block;}
+    .nav-cta .btn:not(.mobile-hide){display:none;}
+  }
+  @media (max-width:620px){
+    .feature-grid{grid-template-columns:1fr;}
+    .hero{padding:8rem 0 4.5rem;}
+    .hero-crest{opacity:0.06;width:80vw;right:-30vw;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important;scroll-behavior:auto !important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="siteHeader">
+  <nav class="wrap">
+    <a href="#top" class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 3 L27 8 V17.5 C27 24 22 29 16 31 C10 29 5 24 5 17.5 V8 Z" fill="none" stroke="#F3EFEA" stroke-width="1.2"/>
+        <path d="M11 21 L14.5 12 L16 16.5 L17.5 12 L21 21" fill="none" stroke="#F3EFEA" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="brand-word">StableSphere</span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#audience">Who it's for</a></li>
+      <li><a href="#video">Pitch</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-ghost-dark">Book a Demo</a>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <svg class="hero-crest" viewBox="0 0 200 220" aria-hidden="true">
+    <path d="M100 6 L184 40 V118 C184 158 148 194 100 214 C52 194 16 158 16 118 V40 Z" fill="none" stroke="#F3EFEA" stroke-width="1"/>
+    <path d="M62 140 L86 78 L100 108 L114 78 L138 140" fill="none" stroke="#F3EFEA" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="100" cy="46" r="10" fill="none" stroke="#F3EFEA" stroke-width="1"/>
+  </svg>
+
+  <div class="wrap hero-inner">
+    <span class="eyebrow" style="color:var(--taupe);opacity:1;">Premium Equestrian Platform</span>
+    <h1>Everything your sport horse needs.<br><em>One platform.</em></h1>
+    <p class="lede">Manage health, performance, nutrition and international competitions within one beautifully connected platform — designed for competitive riders, not as a general horse app.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary-dark">Book a Demo</a>
+      <a href="#video" class="btn btn-ghost-dark">▶ Watch Video</a>
+    </div>
+    <span class="hero-tag">"Because every detail matters."</span>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Problem</span>
+      <h2>Sport horse management is scattered across a dozen tools.</h2>
+      <p>Paper passports, FEI documents, vet records, training journals, competition sites, and endless WhatsApp threads with trainers and vets. Important details get lost between them — and a missed vaccination or forgotten withdrawal period can cost an entire season.</p>
+    </div>
+    <div class="scatter reveal">
+      <span>Paper horse passports</span>
+      <span>FEI documents</span>
+      <span>Veterinary records</span>
+      <span>Training journals</span>
+      <span>Competition websites</span>
+      <span>Nutrition notes</span>
+      <span>WhatsApp with trainers &amp; vets</span>
+      <span>Spreadsheets</span>
+      <span>Calendar reminders</span>
+    </div>
+    <p class="problem-close reveal">One missed detail can end a season. StableSphere exists so it never does.</p>
+  </div>
+</section>
+
+<!-- ============ VISION ============ -->
+<section id="vision" style="background:var(--panel-on-light);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Vision</span>
+      <h2>A single, secure ecosystem for the modern competitive rider.</h2>
+      <p>StableSphere replaces the fragmented combination of paper, spreadsheets and messaging apps with one customizable platform — from everyday horse care to international FEI competitions.</p>
+    </div>
+    <div class="three-up">
+      <div class="item reveal">
+        <span class="num">Health &amp; Care</span>
+        <h3>Every record, in one place.</h3>
+        <p>Vaccinations, diagnoses, medication and rehabilitation — a complete, secure medical history that's never lost again.</p>
+      </div>
+      <div class="item reveal">
+        <span class="num">Performance</span>
+        <h3>Every ride, tracked.</h3>
+        <p>Training logs, competition results and long-term performance graphs to visualize real development.</p>
+      </div>
+      <div class="item reveal">
+        <span class="num">Competition &amp; Feeding</span>
+        <h3>Every detail, prepared.</h3>
+        <p>International travel requirements, packing checklists and personalized nutrition plans — ready before you need them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SETUP: WEBSITE + APP ============ -->
+<section id="setup">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Configure Your StableSphere</span>
+      <h2>Start online, ride with it everywhere.</h2>
+      <p>Create your account on the web, choose your discipline, and personalize your StableSphere setup. Once the app is downloaded, your profile is ready — simply log in and continue with your tailored horse management system.</p>
+    </div>
+
+    <div class="setup-cards">
+
+      <!-- Card 1: Dressage -->
+      <article class="setup-card reveal">
+        <div class="setup-card-media">
+          <!-- Image file lives at the repo root: dressage.jpg -->
+          <img src="dressage.jpg" alt="Dressage version preview" loading="lazy">
+        </div>
+        <div class="setup-card-body">
+          <h3>Dressage Version</h3>
+          <p>Designed for structured training, performance tracking, health routines, and competition preparation.</p>
+          <a href="#contact" class="btn btn-primary-light setup-btn">Select Version</a>
+        </div>
+      </article>
+
+      <!-- Card 2: Showjumping -->
+      <article class="setup-card reveal">
+        <div class="setup-card-media">
+          <!-- Image file lives at the repo root: showjumping.jpg -->
+          <img src="showjumping.jpg" alt="Showjumping version preview" loading="lazy">
+        </div>
+        <div class="setup-card-body">
+          <h3>Showjumping Version</h3>
+          <p>Built for course planning, competition schedules, performance notes, care routines, and team coordination.</p>
+          <a href="#contact" class="btn btn-primary-light setup-btn">Select Version</a>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="setup-note reveal">Horses, team members, and routines can be added or changed anytime in the app.</p>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section id="features" class="section-dark">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Signature Features</span>
+      <h2>Built for FEI-level detail.</h2>
+      <p>Eight tools that turn scattered paperwork into one calm, reliable system — built specifically for competitive horse owners.</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="Competition Readiness Score"
+           data-text="One glance tells you everything: green means cleared to compete, orange means a detail needs attention, ruby means it's blocked. The score combines vaccinations, medication withdrawal periods and outstanding documents into a single, honest signal — so you never find out too late."
+           data-img="feature-readiness.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+        <h3>Competition Readiness Score</h3>
+        <p>A single number that tells you whether your horse is cleared, cautioned, or blocked from competing.</p>
+        <div class="status-row"><span class="status-dot green"></span><span class="status-dot orange"></span><span class="status-dot ruby"></span></div>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="FEI Passport &amp; Documentation"
+           data-text="Microchip number, breed, ownership history, insurance and the full FEI passport — stored securely and always up to date. No more digging through folders before a competition; every official document is exactly where you left it."
+           data-img="feature-fei-passport.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+        <h3>FEI Passport &amp; Documentation</h3>
+        <p>Microchip, passport, insurance and ownership records — always current, always accessible.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="Vaccination Timeline"
+           data-text="Every vaccination, dated and logged in one clear timeline. StableSphere reminds you before validity runs out, so competition entry requirements are met without the last-minute scramble to the vet."
+           data-img="feature-vaccination.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h4l2-6 4 12 2-6h4"/></svg>
+        <h3>Vaccination Timeline</h3>
+        <p>A chronological record of every vaccination, with reminders before validity expires.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="Medication &amp; Withdrawal Tracker"
+           data-text="Record every treatment — medication, dosage, date, veterinarian — and see an estimated withdrawal countdown before competition, with a reminder to verify against official regulations. One less detail to hold in your head."
+           data-img="feature-withdrawal.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+        <h3>Medication &amp; Withdrawal Tracker</h3>
+        <p>Log every treatment and see the estimated withdrawal countdown before competition.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="AI Toxic Plant Scanner"
+           data-text="Point your camera at a pasture plant, leaf or bale of hay and get an instant read: safe, feed with caution, or toxic. Combined with your horse's stored allergies and intolerances, it's a quiet layer of confidence out in the field."
+           data-img="feature-plant-scanner.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 3c3 3 6 6 6 10a6 6 0 0 1-12 0c0-4 3-7 6-10Z"/></svg>
+        <h3>AI Toxic Plant Scanner</h3>
+        <p>Scan pasture plants with your camera and instantly see safe, caution, or toxic ratings.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="Nutrition &amp; Feeding Planner"
+           data-text="Feed plans, supplements, minerals and feeding times — personalized per horse and stored over time. StableSphere reminds you when supplements are running low, so the feeding routine never breaks stride."
+           data-img="feature-nutrition.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20v-4"/></svg>
+        <h3>Nutrition &amp; Feeding Planner</h3>
+        <p>Personalized feed plans, supplements and reminders for every horse, stored and refined over time.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="International Competition Assistant"
+           data-text="Pick your destination and StableSphere gathers what matters: entry requirements, transport rules, a packing checklist and the nearest emergency vets. Preparing for a foreign competition becomes a short list, not a research project."
+           data-img="feature-international.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18Z"/></svg>
+        <h3>International Competition Assistant</h3>
+        <p>Country requirements, transport rules, packing checklists and nearby emergency vets — before you travel.</p>
+      </div>
+
+      <div class="feature-card reveal" tabindex="0" role="button"
+           data-title="Curated Marketplace"
+           data-text="Saddles, bridles, blankets, trailers and horses — filtered by discipline, size, and condition. A marketplace built for people who value quality over clutter, not a general classifieds board."
+           data-img="feature-marketplace.jpg">
+        <svg class="ficon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 7h16l-1.5 11a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+        <h3>Curated Marketplace</h3>
+        <p>Buy and sell saddles, equipment and horses in a marketplace built for quality, not clutter.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIENCE ============ -->
+<section id="audience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Who It's For</span>
+      <h2>Designed around every role in the stable.</h2>
+      <p>Each person invited to a horse's profile sees exactly what's relevant to them — nothing more.</p>
+    </div>
+    <div class="chips reveal">
+      <span>Competitive Riders</span>
+      <span>Trainers &amp; Coaches</span>
+      <span>Grooms &amp; Stable Managers</span>
+      <span>Veterinarians</span>
+      <span>Physiotherapists</span>
+      <span>Farriers</span>
+      <span>Amateur Sport Riders</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEO ============ -->
+<section id="video" class="section-dark">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">See It In Action</span>
+      <h2>The 45-second pitch.</h2>
+      <p>A short walkthrough of the problem, the platform, and why StableSphere exists.</p>
+    </div>
+    <div class="video-frame reveal">
+      <div class="ratio">
+        <!-- Pitch video: https://youtu.be/mcRFBnRQA7E -->
+        <iframe
+          src="https://www.youtube.com/embed/mcRFBnRQA7E"
+          title="StableSphere — Pitch Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT / CALENDLY ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Book A Demo</span>
+      <h2>Ready for a platform that matches your standards?</h2>
+      <p>Book a short call to see StableSphere with your own horses, disciplines and stable team.</p>
+    </div>
+
+    <div class="contact-panel reveal">
+      <div class="contact-card">
+        <h3>Book directly</h3>
+        <p>Pick a time that works for you — no back-and-forth emails.</p>
+        <!-- Required by the assignment: a direct Calendly link -->
+        <a href="https://calendly.com/YOUR-LINK" class="btn btn-primary-light" target="_blank" rel="noopener">Book an appointment</a>
+      </div>
+
+      <div class="contact-card">
+        <h3>Prefer to see it inline?</h3>
+        <p>Paste your Calendly embed code into the widget below (Calendly → your event → “Add to Website” → Inline Embed).</p>
+        <!--
+          TODO: Replace YOUR-LINK with your real Calendly link, e.g. https://calendly.com/jane-doe/demo
+          and uncomment the Calendly widget script at the bottom of the page.
+        -->
+        <div id="calendly-inline-widget" data-url="https://calendly.com/YOUR-LINK?hide_event_type_details=1"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="brand" style="margin-bottom:0.9rem;">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 3 L27 8 V17.5 C27 24 22 29 16 31 C10 29 5 24 5 17.5 V8 Z" fill="none" stroke="#F3EFEA" stroke-width="1.2"/>
+          </svg>
+          <span class="brand-word">StableSphere</span>
+        </div>
+        <p class="footer-principle">Luxury is clarity.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#video">Pitch</a></li>
+        <li><a href="#contact">Book a Demo</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 StableSphere. Because every detail matters.</span>
+      <span>Student MVP project · IBB-620 Entrepreneurship &amp; Valuation</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Optional: Calendly's own widget script for the inline embed above.
+     Uncomment once you've set your real Calendly link in #calendly-inline-widget.
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+-->
+
+<!-- ============ FEATURE DETAIL MODAL ============ -->
+<div class="modal-overlay" id="featureModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-media">
+      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      <!-- Image src is set dynamically from each card's data-img -->
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-body">
+      <span class="eyebrow">StableSphere Feature</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalText"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Nav scroll state
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+
+  // Mobile nav toggle
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  }));
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Feature detail modal
+  const modal = document.getElementById('featureModal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalText = document.getElementById('modalText');
+  const modalClose = document.getElementById('modalClose');
+  let lastFocused = null;
+
+  function openModal(card){
+    modalImg.src = card.dataset.img;
+    modalImg.alt = card.dataset.title;
+    modalTitle.textContent = card.dataset.title;
+    modalText.textContent = card.dataset.text;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    lastFocused = document.activeElement;
+    modalClose.focus();
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('click', () => openModal(card));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); }
+    });
+  });
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+</script>
+
+</body>
+</html>
